@@ -6,6 +6,7 @@
         "laravel",
         "alert"
     ],
+    "version": "1.0.1",
     "homepage": "https://github.com/inengine/alert",
     "license": "MIT",
     "authors": [
@@ -32,6 +33,9 @@
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan-deprecation-rules": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0"
+    },
+    "replace": {
+        "mbarlow/megaphone": "^2.3.0"
     },
     "autoload": {
         "psr-4": {
