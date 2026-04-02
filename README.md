@@ -41,8 +41,8 @@ php artisan vendor:publish --tag=alert-views
 
 UI classes use a BEM-style naming convention (`alert-bell`, `alert-dropdown__header`, `alert-card__title`, etc.). The
 source
-styles live in **`resources/css/alert.css`** as Tailwind `@layer components` rules. The package ships with a **pre-built
-** file at **`public/css/alert.css`** for apps that do not want to build the package locally.
+styles live in **`resources/css/alert.css`** as Tailwind `@layer components` rules. The package ships with a pre-built
+file at **`public/css/alert.css`** for apps that do not want to build the package locally.
 
 ### Building CSS from this package
 
