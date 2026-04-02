@@ -1,100 +1,117 @@
-# In App Alert Notifications for Laravel/InEngine Applications
+# InEngine Alert
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/inengine/alert.svg?style=flat-square)](https://packagist.org/packages/inengine/alert)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/inengine/alert/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/inengine/alert/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/inengine/alert/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/inengine/alert/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/inengine/alert.svg?style=flat-square)](https://packagist.org/packages/inengine/alert)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+In-app alert notifications for Laravel applications. Alerts are stored as Laravel database notifications; a Livewire *
+*alert bell** shows unread items in a dropdown and links to a configurable “view all” URL. Alert types (General,
+Important, Urgent, Task, Info) are configurable and map to notification classes under `InEngine\Alert\Alerts`.
 
-## Support us
+## Requirements
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/Alert.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/Alert)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+- PHP **8.4+**
+- Laravel **11**, **12**, or **13**
+- **Livewire** (optional but required for the bell UI)
+- A **notifiable** Eloquent model with an `alerts()` relationship (see `HasAlerts`)
 
 ## Installation
-
-You can install the package via composer:
 
 ```bash
 composer require inengine/alert
 ```
 
-You can publish and run the migrations with:
+Publish the config (recommended):
 
 ```bash
-php artisan vendor:publish --tag="alert-migrations"
-php artisan migrate
+php artisan vendor:publish --tag=alert-config
 ```
 
-You can publish the config file with:
+Adjust `config/alert.php` for your user (or other notifiable) model, search field, alert type icons/CSS, and the “view
+all alerts” target.
+
+Publish views if you need to customize Blade markup:
 
 ```bash
-php artisan vendor:publish --tag="alert-config"
+php artisan vendor:publish --tag=alert-views
 ```
 
-This is the contents of the published config file:
+## Stylesheet (Tailwind v4)
 
-```php
-return [
-];
-```
+UI classes use a BEM-style naming convention (`alert-bell`, `alert-dropdown__header`, `alert-card__title`, etc.). The
+source
+styles live in **`resources/css/alert.css`** as Tailwind `@layer components` rules. The package ships with a **pre-built
+** file at **`public/css/alert.css`** for apps that do not want to build the package locally.
 
-Optionally, you can publish the views using
+### Building CSS from this package
 
-```bash
-php artisan vendor:publish --tag="alert-views"
-```
-
-### Compiled stylesheet (Tailwind / Vite)
-
-Alert UI classes are defined in `resources/css/alert.css` (Tailwind `@layer components`) and compiled to **`public/css/alert.css`** in this package. Blade views use the `alert-*` / `alert-*__*` class names from that file.
-
-From the package root, install JS tooling and build:
+After changing `resources/css/alert.css`, rebuild from the package root:
 
 ```bash
 npm install
 npm run build
 ```
 
-Publish the built CSS into your app (run after `npm run build` in the package, or use a tagged release that already includes `public/css/alert.css`):
+This outputs the compiled CSS to `public/css/alert.css`. Commit both the source and the built file when contributing
+changes.
+
+### Publishing CSS into your application
 
 ```bash
-php artisan vendor:publish --tag="alert-css"
+php artisan vendor:publish --tag=alert-css
 ```
 
-Then reference it in your layout, for example:
+That copies the built stylesheet to **`public/vendor/inengine/alert.css`**. Link it in your layout (after your main app
+CSS, if you rely on base resets, or alone if the bundle is sufficient):
 
 ```blade
 <link rel="stylesheet" href="{{ asset('vendor/inengine/alert.css') }}">
 ```
 
+The compiled bundle is self-contained (Tailwind theme variables are included), so spacing utilities such as `p-2`
+resolve correctly without a separate override stylesheet.
+
+### Layout and spacing conventions
+
+Defaults are tuned so that the text is not crowded against the card or dropdown:
+
+- **Alert cards** use compact padding (`p-2` on `.alert-card`). Title row and body share the same horizontal inset;
+  extra left margin on the row/main was removed so the title and body align with the card padding.
+- **Dropdown** header uses `px-2 py-2` and `gap-2` between actions; the list area uses consistent horizontal padding so
+  stacked cards sit inset from the panel edge.
+
+To change density or alignment, edit **`resources/css/alert.css`** and run **`npm run build`**, then republish or copy
+`public/css/alert.css` into your app.
+
+## Configuration
+
+Published `config/alert.php` includes:
+
+| Key                     | Purpose                                                                                            |
+|-------------------------|----------------------------------------------------------------------------------------------------|
+| `Alerts`                | Map of alert type FQCN → `icon` and `css` strings for display in the UI                            |
+| `model.FQN`             | Notifiable model class used by `alert:send` and the livewire component                             |
+| `model.search_property` | Column used when searching recipients in `alert:send`                                              |
+| `view_all_alerts_route` | Named route, path, or full URL for “View all alerts”; falls back to `route('alerts.index')` or `#` |
+
 ## Usage
 
-```php
-$alert = new InEngine  Website Management System\Alert();
-echo $alert->echoPhrase('Hello, InEngine  Website Management System!');
-```
+### Notifiable model
 
-### Livewire alert bell
+Your model should use the **`InEngine\Alert\Traits\HasAlerts`** (which includes Laravel’s `Notifiable` trait) trait,
+which exposes an `alerts()` relationship scoped to the configured alert types and unread notifications.
 
-If your application uses Livewire, this package registers an `alert-bell` component automatically.
-The model configured in `alert.model.FQN` must use `InEngine\Alert\Traits\HasAlerts` so the `alerts()` relationship is available.
+### Livewire alert component
+
+The **`alert-bell`** component is registered automatically when Livewire is installed, and the configuration property
+`config('alert.model.FQN')` is a class that defines **`alerts()`**  via the `HasAlerts` trait.
 
 ```blade
 <livewire:alert-bell />
 ```
 
-By default, it links to the `alerts.index` route when available. You can override this:
-
-```blade
-<livewire:alert-bell href="{{ route('dashboard') }}" />
-```
-
-Default styling uses a grey outline (`text-gray-500`) and inherits the surrounding background (`bg-inherit`). Override with Tailwind classes when needed:
+Tailwind classes for the bell and badge:
 
 ```blade
 <livewire:alert-bell
@@ -104,8 +121,14 @@ Default styling uses a grey outline (`text-gray-500`) and inherits the surroundi
     countTextClasses="text-white"
 />
 ```
-The unread count appears above and to the left of the bell icon without overlap.
-Clicking the bell opens a dropdown layered above page content with unread alerts from the `alerts()` relationship.
+
+### Artisan: send an alert
+
+```bash
+php artisan alert:send
+```
+
+Interactive prompts choose recipients (from `alert.model`), type, title, message, and optional link.
 
 ## Testing
 
@@ -115,21 +138,21 @@ composer test
 
 ## Changelog
 
-Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+See [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+Pull requests are welcome. Run `composer test` and `composer format` before submitting.
 
-## Security Vulnerabilities
+## Security
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+Please report security issues according to the policy published for this repository.
 
 ## Credits
 
 - [James Johnson](https://github.com/InEngine)
-- [All Contributors](../../contributors)
+- [Contributors](https://github.com/inengine/alert/contributors)
 
 ## License
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+The MIT License. See [LICENSE.md](LICENSE.md).
