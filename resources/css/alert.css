@@ -1,0 +1,136 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source '../views/**/*.blade.php';
+
+/* Livewire passes these as props; they never appear as literals in blades, so scan them here. */
+@source inline('bg-gray-500');
+@source inline('bg-inherit');
+@source inline('text-gray-500');
+@source inline('text-white');
+@source inline('bg-red-600');
+@source inline('bg-emerald-600');
+@source inline('text-emerald-100');
+@source inline('text-gray-700');
+
+@layer components {
+    /* alert-bell */
+    .alert-bell {
+        @apply relative inline-flex;
+    }
+
+    .alert-bell__toggle {
+        @apply flex;
+    }
+
+    .alert-bell__bell {
+        @apply relative flex items-center justify-center rounded-full p-1;
+    }
+
+    .alert-bell__svg {
+        @apply h-8 w-8;
+    }
+
+    .alert-bell__badge {
+        @apply absolute left-0 top-0 z-10 inline-flex min-h-6 min-w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full px-2 py-1 text-xs font-semibold leading-none;
+    }
+
+    /* alert-dropdown */
+    .alert-dropdown {
+        @apply absolute -right-12 z-20 mt-2 flex max-h-[calc(100dvh-3rem)] flex-col overflow-hidden rounded-md bg-gray-100/10 shadow-lg;
+    }
+
+    .alert-dropdown__header {
+        @apply mb-4 flex flex-row items-center justify-between gap-2 rounded-t-md border-b border-gray-300 bg-gray-50 px-2 py-2 dark:border-gray-700 dark:bg-gray-800;
+    }
+
+    .alert-dropdown__view-all {
+        @apply inline-flex text-sm font-medium text-gray-700 hover:underline dark:text-gray-300;
+    }
+
+    .alert-dropdown__mark-all {
+        @apply inline-flex flex-nowrap justify-items-center justify-evenly gap-1.5 whitespace-nowrap text-sm font-medium text-gray-700 hover:underline dark:text-gray-300;
+    }
+
+    .alert-dropdown__mark-all-icon {
+        @apply ml-4 size-6;
+    }
+
+    .alert-dropdown__body {
+        @apply flex min-h-fit flex-1 flex-col justify-start bg-transparent;
+    }
+
+    .alert-dropdown__list {
+        @apply flex max-h-screen min-h-0 w-full flex-1 flex-col gap-4 overflow-y-auto overscroll-contain pb-4;
+    }
+
+    .alert-dropdown__empty {
+        @apply px-2 py-6 text-center text-sm text-gray-500 dark:text-gray-400;
+    }
+
+    /* alert-card */
+    .alert-card {
+        @apply relative w-9/10 min-h-fit overflow-hidden rounded-lg bg-white p-2 shadow-md transition-shadow hover:shadow-lg  mx-auto;
+    }
+
+    .alert-card__stack {
+        @apply relative z-10 flex flex-col gap-2;
+    }
+
+    .alert-card__row {
+        @apply flex items-start justify-between gap-2;
+    }
+
+    .alert-card__main {
+        @apply flex min-w-0 flex-1 items-start gap-2;
+    }
+
+    .alert-card__main--linked {
+        @apply pointer-events-none;
+    }
+
+    .alert-card__icon {
+        @apply mt-0.5 inline-flex h-4 w-4 items-center justify-center text-blue-500 [&_svg]:h-full [&_svg]:w-full;
+    }
+
+    .alert-card__title {
+        @apply min-w-0 text-sm font-semibold text-gray-900 dark:text-gray-100;
+    }
+
+    .alert-card__actions {
+        @apply relative flex items-center gap-2;
+    }
+
+    .alert-card__dismiss {
+        @apply z-30 inline-flex rounded-full p-0.5 text-white focus:outline-none;
+    }
+
+    .alert-card__dismiss-icon {
+        @apply h-5 w-5 bg-red-500 text-white rounded-full;
+    }
+
+    .alert-card__body {
+        @apply text-sm text-gray-600 dark:text-gray-300;
+    }
+
+    .alert-card__body--linked {
+        @apply pointer-events-none;
+    }
+
+    .alert-card__meta {
+        @apply flex justify-end pb-2.5;
+    }
+
+    .alert-card__meta--linked {
+        @apply pointer-events-none;
+    }
+
+    .alert-card__time {
+        @apply text-xs text-gray-400 dark:text-gray-500;
+    }
+
+    .alert-card__overlay {
+        @apply absolute inset-0 z-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+    }
+}
