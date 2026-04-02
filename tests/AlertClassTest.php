@@ -11,6 +11,8 @@ use InEngine\Alert\Alerts\General;
 use InEngine\Alert\Alerts\Info;
 use InEngine\Alert\Facades\Alert as AlertFacade;
 
+use function Orchestra\Testbench\refresh_router_lookups;
+
 describe('Alert::getAlertTypes', function () {
     test('returns FQCN keys from alert.Alerts config', function () {
         $types = (new Alert)->getAlertTypes();
@@ -85,15 +87,17 @@ describe('Alert::viewAllAlertsUrl', function () {
 
     test('returns route URL when config is empty and alerts.index exists', function () {
         config(['alert.view_all_alerts_route' => '']);
-        Route::get('/alerts-page', fn () => 'ok')->name('alerts.index');
+        Route::get('/alerts', fn () => 'ok')->name('alerts.index');
+        // Fluent ->name() runs after the route is added; refresh name lookups so Route::has / route() see it.
+        refresh_router_lookups(app('router'));
 
-        expect((new Alert)->viewAllAlertsUrl())->toBe(url('/alerts-page'));
+        expect((new Alert)->viewAllAlertsUrl())->toBe(url('/alerts'));
     });
 
     test('uses configured named route when Route::has is true', function () {
         Route::get('/ignored', fn () => 'ok')->name('alerts.index');
         Route::get('/custom-alerts', fn () => 'ok')->name('alerts.custom');
-        config(['alert.view_all_alerts_route' => 'alerts.custom']);
+        config(['alert.view_all_alerts_route' => 'custom-alerts']);
 
         expect((new Alert)->viewAllAlertsUrl())->toBe(route('alerts.custom'));
     });
@@ -117,7 +121,7 @@ describe('Alert facade proxies Alert class', function () {
     });
 
     test('viewAllAlertsUrl matches instance', function () {
-        config(['alert.view_all_alerts_route' => '']);
+        config(['alert.view_all_alerts_route' => 'alerts-page']);
         Route::get('/facade-alerts', fn () => 'ok')->name('alerts.index');
 
         expect(AlertFacade::viewAllAlertsUrl())->toBe((new Alert)->viewAllAlertsUrl());

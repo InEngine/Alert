@@ -49,7 +49,6 @@ class AlertServiceProvider extends PackageServiceProvider
             ->name('alert')
             ->hasConfigFile()
             ->hasViews()
-            // ->hasMigration('create_alert_table')
             ->hasCommand(SendAlert::class);
     }
 
