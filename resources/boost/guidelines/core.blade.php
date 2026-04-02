@@ -1,0 +1,12 @@
+## InEngine Alert
+
+- `inengine/alert` delivers **in-app** alerts as Laravel **database** notifications. Concrete alert classes extend `InEngine\Alert\Alerts\AbstractAlert` (which extends `Illuminate\Notifications\Notification`) and announce the `database` channel only.
+- Add `InEngine\Alert\Traits\HasAlerts` to the notifiable model (it composes `Notifiable`). The `alerts()` relationship returns **unread** rows whose `type` is listed under `config('alert.Alerts')`.
+- Register every alert class in `config/alert.php` under `Alerts` using the **fully qualified class name** as the key (`icon` and `css` entries are optional metadata). Ship with `General`, `Urgent`, `Important`, `Task`, and `Info`; new severities must extend `AbstractAlert` and be added here or they will not appear in the bell or `alerts()` scope.
+- Point `alert.model.FQN` and `alert.model.search_property` at the model that receives alerts (commonly `App\Models\User`). The `alert:send` command and Livewire bell both rely on this configuration.
+- Dispatch alerts with Laravel’s notifier API: `Notification::send($notifiables, $alert)` or `Notification::sendNow(...)` when persistence must happen immediately. Instantiate a concrete class, e.g. `new InEngine\Alert\Alerts\General($title, $body, $link, $linkText)`, or build one via `InEngine\Alert\Facades\Alert::createAlertByTypeClassName($shortName, $title, $message, $link, $linkText)` where `$shortName` matches the trailing segment of a configured FQCN.
+- Use `InEngine\Alert\Facades\Alert` for `getAlertTypes()`, `getAlertTypesClassNames()`, `createAlertByTypeClassName()`, and `viewAllAlertsUrl()`. Set `alert.view_all_alerts_route` to a **named route**, an app path, or a full URL; otherwise the package falls back to `alerts.index` when registered, or `#`.
+- When Livewire is present and the configured model defines `alerts()`, the package registers the `alert-bell` component (`InEngine\Alert\Livewire\AlertBell`). Include it in layouts with `
+<livewire:alert-bell />` (or `@livewire('alert-bell')`) and override Tailwind-related props only when you need custom badge or icon styling.
+- Publish and edit config or CSS when customizing: use the package’s standard publish tags (for example `alert-config` and `alert-css` for the vendored stylesheet under `public/vendor/inengine/`).
+- Prefer `php artisan alert:send` for manual verification during development. Before changing notification schema or delivery, use Boost’s `search-docs` for Laravel **notifications** and **queues** alongside this module’s conventions.

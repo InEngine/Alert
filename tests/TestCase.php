@@ -1,29 +1,25 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace InEngine\Alert\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Foundation\Application;
+use InEngine\Alert\AlertServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use VendorName\Skeleton\SkeletonServiceProvider;
 
+/**
+ * TestCase
+ * Orchestra Testbench base case: registers the Alert service provider and factory name guessing.
+ */
 class TestCase extends Orchestra
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'VendorName\\Skeleton\\Database\\Factories\\'.class_basename($modelName).'Factory'
-        );
-    }
-
-    protected function getPackageProviders($app)
-    {
-        return [
-            SkeletonServiceProvider::class,
-        ];
-    }
-
+    /**
+     * getEnvironmentSetUp
+     * Uses the in-memory testing database connection for package tests.
+     *
+     * @param  Application  $app
+     * @return void
+     */
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
@@ -33,5 +29,34 @@ class TestCase extends Orchestra
             (include $migration->getRealPath())->up();
          }
          */
+    }
+
+    /**
+     * setUp
+     * Registers factory resolution for models under the InEngine\Alert\Database\Factories namespace.
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Factory::guessFactoryNamesUsing(
+            fn (string $modelName) => 'InEngine\\Alert\\Database\\Factories\\'.class_basename($modelName).'Factory'
+        );
+    }
+
+    /**
+     * getPackageProviders
+     * Service providers loaded for each test application container.
+     *
+     * @param  Application  $app
+     * @return array<int, class-string>
+     */
+    protected function getPackageProviders($app)
+    {
+        return [
+            AlertServiceProvider::class,
+        ];
     }
 }
