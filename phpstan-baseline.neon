@@ -1,0 +1,61 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Class App\\Models\\User not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: config/alert.php
+
+		-
+			message: '#^PHPDoc tag @extends has invalid value \(AbstractAlert\)\: Unexpected token "\\n ", expected ''\<'' at offset 132 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Alerts/General.php
+
+		-
+			message: '#^PHPDoc tag @extends has invalid value \(AbstractAlert\)\: Unexpected token "\\n ", expected ''\<'' at offset 136 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Alerts/Important.php
+
+		-
+			message: '#^PHPDoc tag @extends has invalid value \(AbstractAlert\)\: Unexpected token "\\n ", expected ''\<'' at offset 126 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Alerts/Info.php
+
+		-
+			message: '#^PHPDoc tag @extends has invalid value \(AbstractAlert\)\: Unexpected token "\\n ", expected ''\<'' at offset 126 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Alerts/Task.php
+
+		-
+			message: '#^PHPDoc tag @extends has invalid value \(AbstractAlert\)\: Unexpected token "\\n ", expected ''\<'' at offset 130 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Alerts/Urgent.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Foundation\\Auth\\User\:\:alerts\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Livewire/AlertBell.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Foundation\\Auth\\User\:\:notifications\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/Livewire/AlertBell.php
+
+		-
+			message: '#^Parameter \#1 \$view of function view expects view\-string\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Livewire/AlertBell.php
+
+		-
+			message: '#^Trait InEngine\\Alert\\Traits\\HasAlerts is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Traits/HasAlerts.php
