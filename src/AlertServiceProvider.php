@@ -4,21 +4,20 @@ namespace InEngine\Alert;
 
 use InEngine\Alert\Commands\SendAlert;
 use InEngine\Alert\Livewire\AlertBell;
+use InEngine\Modulus\ModuleServiceProvider;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 /**
- * AlertServiceProvider
- * Registers config, views, optional CSS publish tag, the alert:send command, and the Livewire alert-bell component.
+ * Modulus-compatible Alert provider (handshake + Spatie package-tools).
+ *
+ * Boots Livewire / views only when Modulus reports `inengine/alert` enabled,
+ * or when Modulus is absent (standalone).
  */
-class AlertServiceProvider extends PackageServiceProvider
+class AlertServiceProvider extends ModuleServiceProvider
 {
     /**
-     * bootingPackage
-     * Publishes the built Tailwind alert stylesheet to public/vendor when the file exists.
-     *
-     * @return void
+     * Publishes the built Tailwind alert stylesheet when present.
      */
     public function bootingPackage(): void
     {
@@ -29,22 +28,20 @@ class AlertServiceProvider extends PackageServiceProvider
                 $cssPath => public_path('vendor/inengine/alert.css'),
             ], 'alert-css');
         }
+
+        $distCss = dirname(__DIR__).'/resources/dist/css/alert.css';
+        if (is_file($distCss)) {
+            $this->publishes([
+                dirname(__DIR__).'/resources/dist' => public_path('vendor/alert'),
+            ], 'alert-assets');
+        }
     }
 
     /**
-     * configurePackage
-     * Declares the package name, config, views, and console commands via laravel-package-tools.
-     *
-     * @param  Package  $package  Spatie package-tools descriptor being configured.
-     * @return void
+     * {@inheritdoc}
      */
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package
             ->name('alert')
             ->hasConfigFile()
@@ -53,10 +50,15 @@ class AlertServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * packageBooted
-     * Registers the Livewire alert-bell component when Livewire is installed and the configured model supports alerts.
-     *
-     * @return void
+     * {@inheritdoc}
+     */
+    protected function modulusPackageName(): string
+    {
+        return 'inengine/alert';
+    }
+
+    /**
+     * Registers the Livewire alert-bell when Livewire is present and the model supports alerts.
      */
     public function packageBooted(): void
     {
@@ -66,10 +68,7 @@ class AlertServiceProvider extends PackageServiceProvider
     }
 
     /**
-     * modelSupportsAlerts
-     * Whether alert.model.FQN is a class that defines an alerts() relationship (typically via HasAlerts).
-     *
-     * @return bool
+     * Whether alert.model.FQN defines an alerts() relationship (typically via HasAlerts).
      */
     protected function modelSupportsAlerts(): bool
     {

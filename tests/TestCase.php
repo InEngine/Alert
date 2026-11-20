@@ -55,8 +55,12 @@ class TestCase extends Orchestra
      */
     protected function getPackageProviders($app)
     {
-        return [
-            AlertServiceProvider::class,
-        ];
+        $providers = [AlertServiceProvider::class];
+
+        if (class_exists(\InEngine\Modulus\ModulusServiceProvider::class)) {
+            array_unshift($providers, \InEngine\Modulus\ModulusServiceProvider::class);
+        }
+
+        return $providers;
     }
 }
