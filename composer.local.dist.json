@@ -1,0 +1,14 @@
+{
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../Modulus",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
+    "require": {
+        "inengine/modulus": "*@dev"
+    }
+}

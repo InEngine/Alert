@@ -5,6 +5,7 @@ namespace InEngine\Alert\Tests;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Application;
 use InEngine\Alert\AlertServiceProvider;
+use InEngine\Modulus\ModulusServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 /**
@@ -57,8 +58,8 @@ class TestCase extends Orchestra
     {
         $providers = [AlertServiceProvider::class];
 
-        if (class_exists(\InEngine\Modulus\ModulusServiceProvider::class)) {
-            array_unshift($providers, \InEngine\Modulus\ModulusServiceProvider::class);
+        if (class_exists(ModulusServiceProvider::class)) {
+            array_unshift($providers, ModulusServiceProvider::class);
         }
 
         return $providers;

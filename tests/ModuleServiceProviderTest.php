@@ -1,10 +1,11 @@
 <?php
 
 /**
- * Coverage for the Modulus handshake implemented by {@see \InEngine\Alert\AlertServiceProvider}.
+ * Coverage for the Modulus handshake implemented by {@see AlertServiceProvider}.
  */
 
 use InEngine\Alert\AlertServiceProvider;
+use InEngine\Alert\Capabilities\ModuleCapabilityDescriptor;
 use InEngine\Modulus\ModuleServiceProvider;
 
 it('extends the Modulus module service provider handshake', function () {
@@ -20,7 +21,7 @@ it('declares the composer package name for Modulus registration', function () {
 });
 
 it('exposes a static capability payload for inspect tooling', function () {
-    $payload = \InEngine\Alert\Capabilities\ModuleCapabilityDescriptor::toArray();
+    $payload = ModuleCapabilityDescriptor::toArray();
 
     expect($payload)
         ->toHaveKeys(['package', 'provides', 'requires', 'events', 'peers'])
