@@ -20,8 +20,10 @@
 _ide_helper.php
 _ide_helper_models.php
 composer.local.json
+composer.local.dist.json
 composer.lock
 npm-debug.log
+package-lock.json
 phpstan.neon
 phpunit.xml
 testbench.yaml
