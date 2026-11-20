@@ -2,6 +2,14 @@
 
 All notable changes to `Alert` will be documented in this file.
 
+## 1.0.3 - 2026-11-20
+
+### Changed
+
+- README: document Alert as a Modulus module (install ≠ enable)
+- Dependabot: `actions/checkout@v7`; `orchestra/testbench` `^11.2.0||^10.0.0`
+- Ignore `composer.local.dist.json` and `package-lock.json`
+
 ## 1.0.2 - 2026-11-20
 
 ### Added
