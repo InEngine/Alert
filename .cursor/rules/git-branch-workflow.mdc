@@ -1,0 +1,13 @@
+---
+description: InEngine git workflow — develop on dev, PR into main/master
+alwaysApply: true
+---
+
+# InEngine branch workflow
+
+- **Work on `dev`.** Feature commits, CI fixes, and docs land on `dev` first.
+- **Integrate via PR into `main` or `master`** (whichever is the repo’s release/default integration branch). Do not push feature work straight to `main`/`master`.
+- **Core:** default branch is `dev`; merge PRs into `master` (releases tag from `master`).
+- **Packages / Skeleton / docs:** default branch is `dev`; merge PRs into `main` (or `master` if that is the repo’s release branch).
+- **Releases:** tag from the integration branch after merge (`main`/`master`), never rewrite published tags.
+- When opening work in any InEngine repo, check out or create `dev` from the latest integration branch if `dev` is missing.
