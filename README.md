@@ -5,14 +5,15 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/inengine/alert/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/inengine/alert/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/inengine/alert.svg?style=flat-square)](https://packagist.org/packages/inengine/alert)
 
-In-app alert notifications for Laravel applications. Alerts are stored as Laravel database notifications; a Livewire *
-*alert bell** shows unread items in a dropdown and links to a configurable “view all” URL. Alert types (General,
-Important, Urgent, Task, Info) are configurable and map to notification classes under `InEngine\Alert\Alerts`.
+**Modulus module** for [InEngine](https://github.com/InEngine) hosts — `inengine/alert` extends [`ModuleServiceProvider`](https://github.com/InEngine/Modulus) so install ≠ enable: Composer installs the package **disabled** until `php artisan modulus:enable inengine/alert`. Without Modulus (standalone Laravel), the provider boots normally.
+
+In-app alert notifications for Laravel / InEngine applications. Alerts are stored as Laravel database notifications; a Livewire **alert bell** shows unread items in a dropdown and links to a configurable “view all” URL. Alert types (General, Important, Urgent, Task, Info) are configurable and map to notification classes under `InEngine\Alert\Alerts`.
 
 ## Requirements
 
-- PHP **8.4+**
-- Laravel **11**, **12**, or **13**
+- PHP **8.5+**
+- Laravel **12** or **13** (via `illuminate/contracts`)
+- [`inengine/modulus`](https://github.com/InEngine/Modulus) `^0.1@beta` (optional at runtime for standalone use; required by Composer)
 - **Livewire** (optional but required for the bell UI)
 - A **notifiable** Eloquent model with an `alerts()` relationship (see `HasAlerts`)
 
@@ -20,6 +21,13 @@ Important, Urgent, Task, Info) are configurable and map to notification classes 
 
 ```bash
 composer require inengine/alert
+```
+
+On a Modulus host (e.g. [InEngine Core](https://github.com/InEngine/Core)):
+
+```bash
+php artisan modulus:discover
+php artisan modulus:enable inengine/alert
 ```
 
 Publish the config (recommended):
