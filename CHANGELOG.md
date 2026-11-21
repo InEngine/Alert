@@ -2,6 +2,19 @@
 
 All notable changes to `Alert` will be documented in this file.
 
+## v1.0.4 - 2026-11-21
+
+### Added
+
+- Full Capability Registry descriptor (`description`, `binds`, `drivers`, typed `alerts.type:*` tokens)
+- Composer `provide` dual support via `inengine/cap-*` virtual packages
+- Handshake surfaces capabilities through `modulusCapabilities()` for `modulus:capabilities`
+
+### Also
+
+- `dev` → `main` PR workflow and commit attribution docs
+- Update Changelog CI fix
+
 ## 1.0.4 - 2026-11-21
 
 ### Added
