@@ -2,6 +2,12 @@
 
 All notable changes to `Alert` will be documented in this file.
 
+## Unreleased
+
+### Added
+
+- Full Capability Registry descriptor (`description`, `binds`, `drivers`, typed `alerts.type:*` tokens) and Composer `provide` dual support (`inengine/cap-*`)
+
 ## 1.0.3 - 2026-11-20
 
 ### Changed
