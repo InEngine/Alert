@@ -2,7 +2,7 @@
 
 All notable changes to `Alert` will be documented in this file.
 
-## Unreleased
+## 1.0.4 - 2026-11-21
 
 ### Added
 
