@@ -1,0 +1,33 @@
+---
+description: Git and GitHub attribution — James Johnson / excellentingenuity only; no Cursor
+alwaysApply: true
+---
+
+# Git and GitHub attribution
+
+## Author (commits)
+
+- **Author and committer** on commits you create: **`James Johnson <james.johnson@excellentingenuity.com>`** (GitHub: **`excellentingenuity`**).
+- Do **not** add **`Co-authored-by:`** trailers unless the user explicitly asks for one on that commit.
+- Do **not** add **`Co-authored-by: Cursor`**, **`cursoragent@cursor.com`**, or any IDE/agent co-author line.
+- Do **not** mention **Cursor**, **Copilot**, or other AI tools in commit messages, PR titles, or PR bodies unless the user explicitly asks.
+
+## Pull requests
+
+- PRs are opened under **`excellentingenuity`**; write titles and bodies as project work by **James Johnson** / **excellentingenuity**, not as agent-generated content.
+- Do not credit Cursor or “AI” in the PR description, test plan, or release notes.
+
+## Commit-msg hook (recommended on your machine)
+
+The repo ships **`.githooks/commit-msg`** to strip `Co-authored-by: Cursor` after compose. Enable once per clone:
+
+```bash
+git config core.hooksPath .githooks
+chmod +x .githooks/commit-msg
+```
+
+Do **not** run `git config` on the user’s behalf unless they ask. Do **not** use **`git commit --no-verify`** unless they explicitly want to bypass hooks.
+
+## If a commit already has a Cursor trailer
+
+Before push: amend only if the user requests it and the commit is theirs and unpushed. After push: do not rewrite history unless they explicitly ask (would require force-push).

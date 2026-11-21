@@ -66,6 +66,17 @@
             "phpstan/extension-installer": true
         }
     },
+    "provide": {
+        "inengine/cap-alerts-dispatch": "*",
+        "inengine/cap-alerts-livewire-bell": "*",
+        "inengine/cap-alerts-has-alerts": "*",
+        "inengine/cap-alerts-artisan-send": "*",
+        "inengine/cap-alerts-type-general": "*",
+        "inengine/cap-alerts-type-urgent": "*",
+        "inengine/cap-alerts-type-important": "*",
+        "inengine/cap-alerts-type-task": "*",
+        "inengine/cap-alerts-type-info": "*"
+    },
     "extra": {
         "laravel": {
             "providers": [

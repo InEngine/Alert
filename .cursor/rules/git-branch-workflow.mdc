@@ -1,0 +1,19 @@
+---
+description: InEngine git workflow — develop on dev, PR into main/master
+alwaysApply: true
+---
+
+# InEngine branch workflow
+
+- **Work on `dev`.** Feature commits, CI fixes, and docs land on `dev` first.
+- **Integrate via PR into `main` or `master`** (whichever is the repo’s release/default integration branch). Do not push feature work straight to `main`/`master`.
+- **Core:** default branch is `dev`; merge PRs into `master` (releases tag from `master`).
+- **Packages / Skeleton / docs:** default branch is `dev`; merge PRs into `main` (or `master` if that is the repo’s release branch).
+- **Releases:** tag from the integration branch after merge (`main`/`master`), never rewrite published tags.
+- When opening work in any InEngine repo, check out or create `dev` from the latest integration branch if `dev` is missing.
+
+# Commit attribution
+
+- **Author and committer:** `James Johnson <james.johnson@excellentingenuity.com>` (GitHub: `excellentingenuity`).
+- Do **not** add `Co-authored-by:` for Cursor, agents, or any IDE — and do not mention Cursor / AI in commit messages, PR titles, or PR bodies unless the user explicitly asks.
+- See also `.cursor/rules/co-authored-by-jarvis.mdc` and `.githooks/commit-msg`.

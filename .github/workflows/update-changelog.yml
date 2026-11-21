@@ -18,11 +18,34 @@ jobs:
         with:
           ref: main
 
-      - name: Update Changelog
-        uses: stefanzweifel/changelog-updater-action@v1
+      # stefanzweifel/changelog-updater-action@v1 Docker image tracks php:cli-alpine
+      # (now PHP 8.6 without mbstring) and fails Box requirements. Run the CLI
+      # on the runner with setup-php + mbstring instead.
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          latest-version: ${{ github.event.release.name }}
-          release-notes: ${{ github.event.release.body }}
+          php-version: '8.4'
+          extensions: mbstring
+          coverage: none
+
+      - name: Download changelog-updater CLI
+        run: |
+          curl -fsSL "https://github.com/stefanzweifel/changelog-updater-action/raw/v1.12.0/changelog-updater" \
+            -o "${RUNNER_TEMP}/changelog-updater"
+          chmod +x "${RUNNER_TEMP}/changelog-updater"
+
+      - name: Update Changelog
+        env:
+          RELEASE_NOTES: ${{ github.event.release.body }}
+          LATEST_VERSION: ${{ github.event.release.name }}
+        run: |
+          php "${RUNNER_TEMP}/changelog-updater" update \
+            --release-notes="${RELEASE_NOTES}" \
+            --latest-version="${LATEST_VERSION}" \
+            --path-to-changelog=CHANGELOG.md \
+            --compare-url-target-revision=HEAD \
+            --write \
+            --no-interaction
 
       - name: Commit updated CHANGELOG
         uses: stefanzweifel/git-auto-commit-action@v7
